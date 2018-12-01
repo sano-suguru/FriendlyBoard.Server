@@ -20,7 +20,7 @@ namespace FriendlyBoard.Server.Data {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
       modelBuilder.Entity<User>(entity => {
         entity.Property(user => user.Name).HasMaxLength(20).HasDefaultValue("Anonymous");
-        if(environment.IsDevelopment()) {
+        if (environment.IsDevelopment()) {
           entity.HasData(
           /*
            * TODO: Adding Dummy User
@@ -29,14 +29,14 @@ namespace FriendlyBoard.Server.Data {
         }
       });
       modelBuilder.Entity<Thread>(entity => {
+        entity.Property(thread => thread.CreatedUserId).IsRequired();
         entity.Property(thread => thread.Title).IsRequired().HasMaxLength(20);
         entity.Property(thread => thread.Comment).IsRequired().HasMaxLength(1024);
-        entity.HasOne(thread => thread.CreatedBy);
         entity.HasMany(thread => thread.Posts).WithOne(post => post.Thread);
       });
       modelBuilder.Entity<Post>(entity => {
         entity.Property(post => post.Comment).IsRequired().HasMaxLength(1024);
-        entity.HasOne(post => post.PostedBy);
+        entity.Property(post => post.PostedUserId).IsRequired();
       });
     }
   }
