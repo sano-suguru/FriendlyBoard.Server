@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 
 namespace FriendlyBoard.Server.Entities {
-  public class Board {
-    public int BoardId { get; set; }
-    public string Title { get; }
+  public class Thread {
+    public int ThreadId { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public User CreatedBy { get; set; }
+    public string Title { get; set; }
     public string Comment { get; set; }
-    public DateTime PostedAt { get; set; }
-    public User PostedBy { get; set; }
 
     public IList<Post> Posts { get; set; }
   }

@@ -7,7 +7,7 @@ namespace FriendlyBoard.Server.Entities {
     public User PostedBy { get; set; }
     public string Comment { get; set; }
 
-    public int BoardId { get; set; }
-    public Board Board { get; set; }
+    public int ThreadId { get; set; }
+    public Thread Thread { get; set; }
   }
 }
