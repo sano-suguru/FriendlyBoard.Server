@@ -10,9 +10,11 @@ namespace FriendlyBoard.Server.Controllers {
   [ApiController]
   public class ThreadsController : ControllerBase {
     private readonly BoardDbContext context;
+    private readonly IClock systemClock;
 
-    public ThreadsController(BoardDbContext context) {
+    public ThreadsController(BoardDbContext context, IClock systemClock) {
       this.context = context;
+      this.systemClock = systemClock;
     }
 
     [HttpGet]
@@ -32,7 +34,7 @@ namespace FriendlyBoard.Server.Controllers {
     [HttpPost]
     public IActionResult Post([FromBody]PostRequest request) {
       var newThread = new Thread {
-        CreatedAt = DateTime.Now,
+        CreatedAt = systemClock.Now,
         CreatedUserId = request.UserId,
         Title = request.Title,
         Comment = request.Comment
