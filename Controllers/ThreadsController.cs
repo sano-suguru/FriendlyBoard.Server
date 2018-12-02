@@ -2,6 +2,7 @@
 using FriendlyBoard.Server.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace FriendlyBoard.Server.Controllers {
@@ -29,10 +30,26 @@ namespace FriendlyBoard.Server.Controllers {
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody]Thread thread) {
-      context.Threads.Add(thread);
+    public IActionResult Post([FromBody]PostRequest request) {
+      var newThread = new Thread {
+        CreatedAt = DateTime.Now,
+        CreatedUserId = request.UserId,
+        Title = request.Title,
+        Comment = request.Comment
+      };
+      context.Threads.Add(newThread);
       context.SaveChanges();
-      return CreatedAtRoute("GetThread", new { id = thread.ThreadId }, thread);
+      return CreatedAtRoute(
+        routeName: "GetThread",
+        routeValues: new { id = newThread.ThreadId },
+        value: newThread
+      );
+    }
+
+    public class PostRequest {
+      public int UserId { get; set; }
+      public string Title { get; set; }
+      public string Comment { get; set; }
     }
   }
 }
